@@ -47,6 +47,7 @@
       </v-content>
       <v-footer color="primary" dark app>
         <button @click="logout">ログアウト</button>
+        <span>{{ dbTest.name || '失敗' }}</span>
       </v-footer>
     </template>
   </v-app>
@@ -100,8 +101,6 @@
 -->
 
 <script>
-
-
 export default {
   name: 'App',
 
@@ -113,6 +112,10 @@ export default {
     user : {
       id: '',
       displayName: ''
+    },
+    dbTest: {
+      uid: '',
+      name: 'しっぱい'
     },
     isLogin: false,
     drawer: null,
@@ -161,6 +164,7 @@ export default {
       if (user) {
         this.isLogin = true;
         this.user = user;
+        this.GetData();
       } else {
         this.isLogin = false;
         this.user = null;
@@ -175,6 +179,35 @@ export default {
     },
     logout: function() {
       firebase.auth().signOut();
+    },
+
+    GetData() {
+      var db = firebase.firestore();
+      var usersRef = db.collection("users");
+      var addData = {
+          name: "mofu",
+          uid: 'mofu'
+      }
+
+      usersRef.doc(this.user.uid).set(addData).then(() => {
+          console.log("Document successfully written!");
+      }).catch((error) => {
+          console.error("Error writing document: ", error);
+      });
+
+      var docRef = db.collection("users").doc(this.user.uid);
+
+      docRef.get().then((doc) => {
+          if (doc.exists) {
+              console.log("Document data:", doc.data());
+              this.dbTest = doc.data();
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch((error) => {
+          console.log("Error getting document:", error);
+      });
     }
   }
 };

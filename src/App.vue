@@ -1,56 +1,7 @@
 <template>
-  <v-app>
-    <template v-if="!isLogin">
-      <h1>login</h1>
-      <button @click="googleLogin">ログイン</button>
-    </template>
-    <template v-else>
-      <v-navigation-drawer app v-model="drawer" clipped >
-        <v-container>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title class="title">
-                メニュー
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-divider></v-divider>
-
-          <v-list nav dense>
-            <v-list-group
-            v-for="nav_list in nav_lists"
-            :key="nav_list.name"
-            :prepend-icon="nav_list.icon"
-            no-action
-            :append-icon="nav_list.lists ? undefined : ''">
-              <template v-slot:activator>
-                <v-list-item-content>
-                  <v-list-item-title>{{ nav_list.name }}</v-list-item-title>
-                </v-list-item-content>
-              </template>
-              <v-list-item v-for="list in nav_list.lists" :key="list.name" :to="list.link">
-                <v-list-item-content>
-                  <v-list-item-title>{{ list.name }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-group>
-          </v-list>
-        </v-container>
-      </v-navigation-drawer>
-      <v-app-bar color="primary" dark app>
-        <v-app-bar-nav-icon @click="drawer=!drawer"></v-app-bar-nav-icon>
-        <v-toobar-title>{{user.displayName}}家の納品書システム(⋈◍＞◡＜◍)。✧♡</v-toobar-title>
-      </v-app-bar>
-      <v-content>
-        <router-view />
-      </v-content>
-      <v-footer color="primary" dark app>
-        <button @click="logout">ログアウト</button>
-      </v-footer>
-    </template>
-  </v-app>
+  <router-view />
 </template>
+
 
 <!--
 <template>
@@ -157,24 +108,27 @@ export default {
   }),
 
   created: function() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.isLogin = true;
-        this.user = user;
-      } else {
-        this.isLogin = false;
-        this.user = null;
-      }
-    })
+    // firebase.auth().onAuthStateChanged(user => {
+    //   if (user) {
+    //     this.isLogin = true;
+    //     this.user = user;
+    //   } else {
+    //     this.isLogin = false;
+    //     this.user = null;
+    //   }
+    // })
   },
 
   methods:{
     googleLogin: function() {
-      var provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithRedirect(provider);
+      // var provider = new firebase.auth.GoogleAuthProvider();
+      // firebase.auth().signInWithRedirect(provider);
+      this.isLogin = true;
+      this.$router.push("/customers");
+      alert("aaa")
     },
     logout: function() {
-      firebase.auth().signOut();
+      //firebase.auth().signOut();
     }
   }
 };

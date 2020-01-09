@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <template>
-      <v-app-bar color="primary" dark app>
+      <v-app-bar color="primary darken-2" dark app>
         <v-app-bar-nav-icon @click="drawer=!drawer"></v-app-bar-nav-icon>
         <v-toobar-title>{{user.displayName}}家の納品書システム</v-toobar-title>
         <v-spacer></v-spacer>
